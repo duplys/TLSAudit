@@ -1,2 +1,2 @@
 # TLSAudit
-Simple script to check whether your TLS configuration is secure
+A simple script to check whether your TLS configuration is secure
