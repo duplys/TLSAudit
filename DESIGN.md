@@ -18,14 +18,21 @@ To achieve modularity, TLSAudit uses the pipes-and-filters architecture. Moreove
 
 ### Data structures
 
-Dictionary D of all Nginx TLS configuration options, with keys being the individual options in a hierarchical notation A:B:C:<...> and values being {secure|weak|insecure}.
+Dictionary D of all Nginx TLS configuration options, with keys being the individual options in a hierarchical notation `A:B:C` and values being `{secure|weak|insecure}`.
 
 ### Filters
 
-* Parser: read Nginx configuration file (provided as argument) and extract a list L with TLS configuration options (hierarchical notation A:B:C)
+* Parser: read Nginx configuration file (provided as argument) and extract a list L with TLS configuration options (hierarchical notation `A:B:C`)
 * Checker: take L and dictionary D as input, output list R containing configuration options which are either weak or insecure
 * Reporter: take R as input and generate a simple command line report (if needed, different report formats can be added later)
 
 ## Implementation
 
 To ensure minimal amount of dependencies and maximum portability, TLSAudit is implemented as a Bash script. While TLSAudit would be easier to implement in a modern scripting language like Python, most Linux distributions come with the Bash shell pre-installed so that a Bash script can be used out-of-the-box.
+
+### Files
+
+* `tlsaudit.sh` is the main script
+* `lib/parser.sh` contains the parser code
+* `lib/checker.sh` contains the checker code
+* `lib/reporter.sh` contains the reporter code
