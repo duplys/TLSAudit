@@ -2,6 +2,13 @@
 
 A simple script to check whether your Nginx TLS configuration is secure.
 
+## Usage
+
+Make sure `tlsaudit.sh` is executable and execute:
+```bash
+./tlsaudit.sh <path/to/your/nginx.conf>
+```
+
 ## Architecture
 See [DESIGN.md](DESIGN.md) for more details on architectural drivers, software architecture and implementation.
 
