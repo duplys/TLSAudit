@@ -27,13 +27,29 @@ parseNginxConfig() {
 
     # Use grep to get the lines and read them into the array
     while IFS= read -r line; do
-        # Step 1: Remove leading/trailing spaces and semicolon
-        cleaned_string=$(echo "$line" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//;s/;$//')
+        # Step 1: Remove leading/trailing spaces, remove the semicolon at the end of the line
+        #echo "$line"
+        cleaned_string=$(echo "$line" | sed 's/^[[:space:]]*//g;s/[[:space:]]*$//g;s/:/ /g;s/;$//g;')
 
-        # Step 2: Replace multiple spaces with a single colon
-        formatted_string=$(echo "$cleaned_string" | sed 's/[[:space:]]\+/:/g')
+        #echo "Cleaned string: $cleaned_string"
 
-        # Step 3: Store the resulting string in the array
-        tls_options+=("$formatted_string")
+        # Split the string into an array
+        IFS=' ' read -r -a array <<< "$cleaned_string"
+
+        # Initialize an empty array to hold the results
+        result_array=()
+
+        # Iterate over the array starting from the second element
+        for (( i=1; i<${#array[@]}; i++ )); do
+            result_array+=("${array[0]}:${array[i]}")
+        done
+
+        # Print the resulting array
+        for element in "${result_array[@]}"; do
+            #echo "New element: $element"
+            # Step 3: Store the resulting string in the array
+            tls_options+=("$element")
+        done
+
     done < <(grep -E "^\s*(ssl_certificate|ssl_certificate_key|ssl_protocols|ssl_ciphers|ssl_prefer_server_ciphers|ssl_session_cache|ssl_session_timeout|ssl_trusted_certificate|ssl_stapling|ssl_stapling_verify|ssl_dhparam)\s+" "$config_file")
 }
